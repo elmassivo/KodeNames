@@ -1,31 +1,54 @@
-a:link {color: black;}      /* unvisited link */
-a:visited {color: black;}   /* visited link */
-a:hover {color: black;}     /* mouse over link */
-a:active {color: black;}    /* selected link */
+a:link {color: white;text-decoration: none;text-shadow: 0px 0px 10px black;}      /* unvisited link */
+a:visited {color: #FFF;text-shadow: 0px 0px 0px !important;}   /* visited link */
+a:hover {color: white;}     /* mouse over link */
+a:active {color: white; }    /* selected link */
 
 html {
 	font-family : "Verdana";
-}
-
-#board {
-	font-size : 1.5em;
 }
 
 button, input, span#first {
 	font-size : 1.3em;	
 }
 
-#board {
-	width: 100%;
-	position : absolute;
-	bottom : 5px;
-	left : 2%;
-	right : 1%;
-	top : 48px;
+#menu {
+    top: 70px;
+    right: 5px;
+    position: fixed;
+    width: 250px;
+    height: 500px;
+    background-color: #555;
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 0px 20px black;
+    display:none;
+    z-index:10000;
 }
 
-#board div.row {
-	height : 20%;
+#seed {
+    position: absolute;
+    top: 5px;
+    left: -8px;
+    width: 200px;
+    border: none;
+    border-radius: 15px;
+    padding:10px;
+    padding-right:40px;
+    background-color: #444;
+    text-align: right;
+    color: #CCC;
+    font-size:30px;
+    text-shadow: 0px 0px 10px black;
+}
+
+#board {
+	font-size : 1.5em;
+	width: 930px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:20px;
+	color: white !important;
 }
 
 #board div.word {
@@ -33,91 +56,268 @@ button, input, span#first {
 	text-align : center;
 	vertical-align : middle;
 	cursor : pointer;
-	border : 2px #DDDDDD solid;
-	border-radius : 5px;
-	font-weight : bold;
-	width : 19%;
-	height : 99%;
+	/* border: 3px #929292 solid; */
+	margin: 3px;
+	box-shadow: 0px 0px 20px black;
+	background-color: #555;
+	border-radius: 15px;
+	font-weight: 900;
+	font-size: 14pt;
+	width: 180px;
+	height: 125px;
 	display : inline-block;
 	line-height : 99%;
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-khtml-user-select: none;    /* Konqueror */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* Internet Explorer/Edge */
+	user-select: none;    
+    -webkit-transition: background 0.2s linear;
+    -moz-transition: background 0.2s linear;
+    -ms-transition: background 0.2s linear;
+    -o-transition: background 0.2s linear;
+    transition: background 0.2s linear;
+}
 
+body.light{
+    background-color: #FFF;
+}
+
+body.light #board div.word {
+    background-color: #FFF;
+    color:black;
+    -webkit-transition: color 0.2s linear;
+    -moz-transition: color 0.2s linear;
+    -ms-transition: color 0.2s linear;
+    -o-transition: color 0.2s linear;
+    transition: color 0.2s linear;
+    -webkit-transition: background 0.2s linear;
+    -moz-transition: background 0.2s linear;
+    -ms-transition: background 0.2s linear;
+    -o-transition: background 0.2s linear;
+    transition: background 0.2s linear;
+}
+
+body.light #board div.word div {
+    text-shadow: 2px 2px 5px #CFD8DC; 
+}
+
+body.light .redStarts
+{
+    background-color:#ffb1b0 !important;
+    box-shadow: none;
+}
+
+body.light .blueStarts
+{
+    background-color:#4FC3F7 !important;
+    box-shadow: none;
+}
+
+body.light .score
+{
+    color:#FFF;
+    text-shadow: 2px 2px 5px black;
+    box-shadow: 0px 0px 10px #CFD8DC !important;
+}
+
+body.light #seed
+{
+    background-color:#CFD8DC;
+    text-shadow:none;
+    color:black;
+}
+
+body.light #board div.word:hover {
+    box-shadow: 0px 0px 40px #CFD8DC;
+}
+
+body.light #footer{
+  color: #CFD8DC !important;
+}
+
+body.light #menu {
+    background-color:#CFD8DC;
+    box-shadow: 0px 0px 10px black;
+}
+
+body.light .hamburger
+{
+  background-color:#CFD8DC !important;
+  box-shadow: none;
+}
+body.light .hamburger-inner, body.light .hamburger-inner::before, body.light .hamburger-inner::after {
+  background-color:#000;
+}
+
+body.light .menuText {
+    color: black;
+    text-shadow: none;
+}
+
+body.light #spymaster {
+    background-color:#FFF;
+    color:black;
+    text-shadow: 2px 2px 5px #CFD8DC;
+}
+
+body.light .chosen div {
+    color: #FFF;
+    -webkit-transition: color 0.2s linear;
+    -moz-transition: color 0.2s linear;
+    -ms-transition: color 0.2s linear;
+    -o-transition: color 0.2s linear;
+    transition: color 0.2s linear;
+    text-shadow: 2px 2px 5px black !important;
+}
+
+#board div.word:hover {
+	font-size:16pt;
+	z-index:99999;
+	box-shadow: 0px 0px 40px black;
+}
+
+#board div.word:active {
+	background-color:#444;
 }
 
 #board div.word div {
-
-	/* Internet Explorer 10 */
 	display:-ms-flexbox;
-	-ms-flex-pack:center;
-	-ms-flex-align:center;
-
-	/* Firefox */
+    -ms-flex-pack:center;
+    -ms-flex-align:center;
 	display:-moz-box;
-	-moz-box-pack:center;
-	-moz-box-align:center;
-
-	/* Safari, Opera, and Chrome */
+    -moz-box-pack:center;
+    -moz-box-align:center;
 	display:-webkit-box;
-	-webkit-box-pack:center;
-	-webkit-box-align:center;
-
-	/* W3C */
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 	display:box;
-	box-pack:center;
-	box-align:center;
-
-	height : 100%;
-
+    box-pack:center;
+    box-align:center;
+    height : 95%;
+    text-shadow: 0px 0px 10px black;
 }
 
 
 #spymaster {
-	float : right;
-	margin-left: 10px;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    background-color: #666;
+    color: white;
+    font-weight: 900;
+    text-shadow: 0px 0px 10px black;
+    cursor: pointer;    
+    box-shadow: 3px 3px 5px black;
 }
 
-#confirm {
-	float : right;
+.menuText{
+    font-size: 14pt;
+    font-weight: 900;
+    text-shadow: 3px 3px 5px black;
+    cursor:pointer;
+}
+.menuCheck{
+    margin-top:20px;
+    cursor:pointer;
 }
 
-#gameMode {
-	float : right;
-}
-#movieCheck {
-	float : right;	
-}
-
-#confirmText {
-	float : right;	
-}
-#google_translate_element {
-	float: right;
-}
-#header{
-	/*background-color: grey;*/
-}
-.ada {
-  height: 1px;
-  width: 1px;
-  position: absolute;
-  overflow: hidden;
-  top: -10px;
- 
+body {
+	background-color:#333;
+    -webkit-transition: background 0.2s linear;
+    -moz-transition: background 0.2s linear;
+    -ms-transition: background 0.2s linear;
+    -o-transition: background 0.2s linear;
+    transition: background 0.2s linear;
 }
 
 .redStarts{
-	border-left: #ff0000;
-	border-left-style: solid;
+	background-color: #790707 !important;
+	padding-right: 4px;
+	border-radius: 15px;
+	padding-bottom: 4px;
+	padding-left: 2px;
+	padding-top: 4px;
+	box-shadow: 0px 0px 50px #000000;
 }
+
 .blueStarts{
-	border-left: #00eeee;
-	border-left-style: solid;
+	background-color: #317da7 !important;
+	padding-right: 4px;
+	border-radius: 15px;
+	padding-bottom: 4px;
+	padding-left: 2px;
+	padding-top: 4px;
+	box-shadow: 0px 0px 50px #000000;
 }
 
 #redScore{
-	color: #ff0000;
-	font-size: 23px;
+    background-color: #d43434;
 }
+
 #blueScore{
-	color: #00eeee;
-	font-size: 23px;
+    background-color: #38b5d0;
+}
+
+#yellowScore{
+    background-color: #efe36d;
+}
+
+#blackScore{
+    background-color: #111111;
+    color:white !important;
+}
+
+.score{
+	color: #333;
+    font-size: 30pt;
+    font-weight: 800;
+    border-radius: 6px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 12px;
+    margin-top: -12px;
+    width: 25px;
+    text-align: center;
+    position:relative;
+    top:-4px;
+    box-shadow: 0px 0px 20px black;
+   	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-khtml-user-select: none;    /* Konqueror */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* Internet Explorer/Edge */
+	user-select: none;    
+}
+
+#footer{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 20pt;
+    font-weight: 900;
+    color: #444 !important;
+    z-index: -1;
+}
+#footer a{
+	color: #444 !important;
+	text-decoration: none;
+	text-shadow: none
+}
+#footer a:hover{
+	color: #444 !important;
+	text-decoration: none;
+}
+#footer a:active{
+	color: #444 !important;
+	text-decoration: none;
+}
+#footer a:visited{
+	color: #444 !important;
+	text-decoration: none;
 }

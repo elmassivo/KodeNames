@@ -12,15 +12,79 @@ var spyMasterMode = false;
 var sessionData = [];
 var customData = [];
 
-var COLOR_RED = "#ff0000";
-var COLOR_YELLOW = "#ffff00";
-var COLOR_BLUE = "#00eeee";
-var COLOR_BLACK = "#808080";
-var COLOR_GREEN = "#009000";
+var COLOR_RED = "#d43434";
+var COLOR_YELLOW = "#efe36d";
+var COLOR_BLUE = "#38b5d0";
+var COLOR_BLACK = "#111111";
+var COLOR_GREEN = "#17af98";
 
-//init
+var menuIsOpen = false;
+
+$('.hamburger').click(function(){
+	if(menuIsOpen)	{
+		$('.hamburger').removeClass('is-active');
+		$('#menu').fadeOut(500);
+		menuIsOpen = false;
+	}
+	else{
+		$('.hamburger').addClass('is-active');
+		$('#menu').fadeIn(500);
+		menuIsOpen = true;
+	}
+});
+
+$('.word').hover(function(){},function(){
+	if(menuIsOpen)
+	{
+		$('.hamburger').removeClass('is-active');
+		$('#menu').fadeOut(500);
+		menuIsOpen = false;
+	}
+});
+
+$(document).ready(function(){
+	var seed = $('#seed');
+	if(location.hash.length == 0)
+	{
+		seed.val(Math.floor(Math.random()*1000));
+		location.hash = $('#seed').val();
+	}
+	else
+	{
+		var hash = location.hash.substring(1);
+		seed.val(hash)
+	}
+	$('#lightTheme').click();
+	fire();
+});
+
 $( "#seed" ).keyup(function() {
   fire();
+  clearTimeout(updateHashCall);
+  updateHashCall = setTimeout(function(){ location.hash = $('#seed').val();}, 500);
+});
+
+var updateHashCall;
+
+$('#confirmText').click(function(){
+	$('#confirm').click();
+});
+
+$('#lightThemeText').click(function(){
+	$('#lightTheme').click();
+});
+
+var lightThemeChecked = false;
+$("#lightTheme").change(function(){
+	if(this.checked){
+		lightThemeChecked = true;
+		$('body').addClass('light');
+	}
+	else
+	{
+		lightThemeChecked = false;
+		$('.light').removeClass('light');
+	}
 });
 
 function fire() {
@@ -75,9 +139,8 @@ function createNewGame() {
 		var word = sessionData[randomNumber];
 		removeItem(sessionData, randomNumber);
 		wordsSelected.push(word);
-		trs[i % 5] += "<div class=\"word\" id=\'" + i + "\' onclick=\"clicked(\'" + i + "\')\"><div><a href=\"#\"><span class=\"ada\"></span>" + word + "</a></div></div>";
+		trs[i % 5] += "<div class=\"word\" id=\'" + i + "\' onclick=\"clicked(\'" + i + "\')\"><div>" + word + "</div></div>";
 	}
-	//<a href="#"><span class="ada">Washington stimulates economic growth </span>Read me</a>
 	for (var i = 0; i < trs.length; i++) {
 		document.getElementById("board").innerHTML += '<div class="row">' + trs[i] + '</div>'
 	}
@@ -112,65 +175,80 @@ function createNewGame() {
 
 	//shuffle teams
 	shuffle(teams);
-
+	updateScore();
 }
 
 function clicked(value) {
+	var item = $('#' + value);
 	if (!spyMasterMode) {
 		//guessers mode
 		var word = wordsSelected[value];
 		if (document.getElementById("confirm").checked) {
 			if (window.confirm("Are sure you want to select '" + word + "'?")) {
-				document.getElementById(value).style.backgroundColor = teams[value];
-				if (teams[value] == "black") {
-					document.getElementById(value).style.color = "white";
-				}
+				item.css('background-color', teams[value]);
+				item.attr('data-color',teams[value]);
+				item.addClass('chosen');
 			}
 		} else {
-			document.getElementById(value).style.backgroundColor = teams[value];
-			if (teams[value] == "black") {
-				document.getElementById(value).style.color = "white";
-			}
+			item.css('background-color', teams[value]);
+			item.attr('data-color',teams[value]);
+			item.addClass('chosen');
+
 		}
-		//update score
-		updateScore();
 	} else {
 		//spymaster mode
-		document.getElementById(value).style.backgroundColor = COLOR_GREEN;
+		item.css('background-color', COLOR_GREEN);
+		item.attr('data-color',teams[value]);
+
 	}
+	updateScore()
+	item.css('font-size','16pt');
 }
 
 function updateScore(){
 	var blueScore = 9;
 	var redScore = 9;
-	$('div.word').each(function(){
-		var color = $(this).css('background-color');
-		if (color === 'rgb(0, 238, 238)'){
-			blueScore--;
-		}
-		if (color === 'rgb(255, 0, 0)'){
-			redScore--;
-		}
-	});
-	//subtract 1 for non-starting team
-	if($('.redStarts') === 1){
-		redScore--;
-	} else {
-		blueScore--;
+	var yellowScore = 7;
+	var blackScore = 1;
+
+	if ($('#board.redStarts').length > 0){
+		blueScore = 8;
+	}
+	else {
+		redScore = 8;
 	}
 
+	$('div.word').each(function(){
+		var color = $(this).attr('data-color');
+		if (color === COLOR_BLUE){
+			blueScore--;
+		}
+		if (color === COLOR_RED){
+			redScore--;
+		}
+		if (color === COLOR_YELLOW){
+			yellowScore--;
+		}
+		if (color === COLOR_BLACK){
+			blackScore--;
+		}
+	});
 	$('#redScore').text(redScore);
 	$('#blueScore').text(blueScore);
+	$('#yellowScore').text(yellowScore);
+	$('#blackScore').text(blackScore);
 }
 
 function spyMaster() {
 	//TODO: randomize or organize tiles for easier comparing
 	spyMasterMode = true;
 	for (var i = 0; i < NUMBER_OF_WORDS; i++) {
+		var item = $(document.getElementById(i));
 		document.getElementById(i).style.backgroundColor = teams[i];
-		if (teams[i] == "black") {
-			document.getElementById(i).style.color = "white";
+		if (teams[i] == COLOR_BLACK) {
+			document.getElementById(i).style.color = "red !important";
 		}
+		item.addClass('chosen');
 	}
 }
 
@@ -203,4 +281,23 @@ document.getElementById('seed').onkeypress = function(e) {
 		fire();
 		return false;
 	}
+}
+
+$.cssHooks.backgroundColor = {
+    get: function(elem) {
+        if (elem.currentStyle)
+            var bg = elem.currentStyle["backgroundColor"];
+        else if (window.getComputedStyle)
+            var bg = document.defaultView.getComputedStyle(elem,
+                null).getPropertyValue("background-color");
+        if (bg.search("rgb") == -1)
+            return bg;
+        else {
+            bg = bg.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+            }
+            return "#" + hex(bg[1]) + hex(bg[2]) + hex(bg[3]);
+        }
+    }
 }
