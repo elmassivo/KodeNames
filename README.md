@@ -1,13 +1,14 @@
 # KodeNames
-KodeNames game
+Codenames Clone (CODENAMES AND DRAGONS)
+
+# Description
+Used explcitly for my groups DnD campaign for off evenings.
+
+# Hosted
+Currently hosted at http://m4sv.com/etc/codenames.html
 
 # Instructions:
-1. distribute website to players
-2. distribute common "seed" to sync words
-3. spymasters click on spymaster button to see key. 
+1. Set a seed or just copy your URL to other players (hash will automatch)
+2. Spymasters click the hamburger menu > spymaster button to see key. 
+3. Find the right spies, don't get assassinated, try to leave a few bystanders alive.
 
-To start new game, go to step 2.
-
-# TODO:
-1. Im thinking of doing some async, but ill need to decide on a backend...
-2. CSS
