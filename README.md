@@ -1,8 +1,8 @@
 # KodeNames
-A clone of the board game Codenames (this one is called CODENAMES AND DRAGONS)
+A clone of the board game Codenames (this one is called Kodenames and Dragons)
 
 # Description
-Codenames and Dragons has been designed explcitly for my group's DnD campaign on 'off' evenings.
+Kodenames and Dragons has been designed explcitly for my group's DnD campaign on 'off' evenings.
 'Kodenames' has been reformatted to work better on mobile, and has had its CSS updated to allow for a more intuitive/smooth experience.
 
 # Hosted
