@@ -16,7 +16,7 @@ var COLOR_RED = "#d43434";
 var COLOR_YELLOW = "#efe36d";
 var COLOR_BLUE = "#38b5d0";
 var COLOR_BLACK = "#111111";
-var COLOR_GREEN = "#17af98";
+var COLOR_GREEN = "#00a900";
 
 var menuIsOpen = false;
 
@@ -54,7 +54,10 @@ $(document).ready(function(){
 		var hash = location.hash.substring(1);
 		seed.val(hash)
 	}
-	$('#lightTheme').click();
+	if(getCookie("darkTheme")!=="true")	{
+		$('#lightTheme').click();
+		lightThemeChecked = false;
+	}
 	fire();
 });
 
@@ -79,11 +82,12 @@ $("#lightTheme").change(function(){
 	if(this.checked){
 		lightThemeChecked = true;
 		$('body').addClass('light');
+		setCookie("darkTheme", "false", 10);
 	}
-	else
-	{
+	else {
 		lightThemeChecked = false;
 		$('.light').removeClass('light');
+		setCookie("darkTheme", "true", 10);
 	}
 });
 
@@ -197,8 +201,14 @@ function clicked(value) {
 		}
 	} else {
 		//spymaster mode
-		item.css('background-color', COLOR_GREEN);
-		item.attr('data-color',teams[value]);
+		if(item.css('background-color') == COLOR_GREEN) {
+			item.css('background-color', teams[value]);
+			item.attr('data-color','');
+		}
+		else {
+			item.css('background-color', COLOR_GREEN);
+			item.attr('data-color',teams[value]);
+		}
 
 	}
 	updateScore()
@@ -240,15 +250,18 @@ function updateScore(){
 }
 
 function spyMaster() {
-	//TODO: randomize or organize tiles for easier comparing
-	spyMasterMode = true;
-	for (var i = 0; i < NUMBER_OF_WORDS; i++) {
-		var item = $(document.getElementById(i));
-		document.getElementById(i).style.backgroundColor = teams[i];
-		if (teams[i] == COLOR_BLACK) {
-			document.getElementById(i).style.color = "red !important";
+	if(!spyMasterMode) {
+		spyMasterMode = true;
+		for (var i = 0; i < NUMBER_OF_WORDS; i++) {
+			var item = $(document.getElementById(i));
+			item.css('backgroundColor', teams[i]);
+			if (teams[i] == COLOR_BLACK) {
+				item.css('color', "red !important");
+			}
+			item.addClass('chosen');
+			item.attr('data-color','');
 		}
-		item.addClass('chosen');
+		updateScore();
 	}
 }
 
@@ -300,4 +313,26 @@ $.cssHooks.backgroundColor = {
             return "#" + hex(bg[1]) + hex(bg[2]) + hex(bg[3]);
         }
     }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
