@@ -5,6 +5,10 @@ A clone of the board game Codenames (this one is called Kodenames and Dragons)
 Kodenames and Dragons has been designed explcitly for my group's DnD campaign on 'off' evenings.
 'Kodenames' has been reformatted to work better on mobile, and has had its CSS updated to allow for a more intuitive/smooth experience.
 
+# I've never played codenames before, how do I shot web?
+Here's a short tutorial on how to play codenames:
+https://www.youtube.com/watch?v=J8RWBooJivg
+
 # Hosted
 Currently hosted at http://m4sv.com/etc/codenames.html
 
