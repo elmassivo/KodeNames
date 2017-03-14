@@ -43,6 +43,7 @@ $('.word').hover(function(){},function(){
 });
 
 $(document).ready(function(){
+	$(window).resize(resizeGameBoard);
 	var seed = $('#seed');
 	if(location.hash.length == 0)
 	{
@@ -59,7 +60,21 @@ $(document).ready(function(){
 		lightThemeChecked = false;
 	}
 	fire();
+	resizeGameBoard();
 });
+
+function resizeGameBoard()
+{
+	var windowHeight = $(window).height();
+	if(windowHeight < 750)
+	{
+		$('.word').css("height",(windowHeight/7));
+	}
+	else
+	{
+	$('.word').css("height","125px");	
+	}
+}
 
 $( "#seed" ).keyup(function() {
   fire();
