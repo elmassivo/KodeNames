@@ -20,6 +20,9 @@ var COLOR_GREEN = "#00a900";
 
 var menuIsOpen = false;
 
+var seed = '';
+var session = '';
+
 $('.hamburger').click(function(){
 	if(menuIsOpen)	{
 		$('.hamburger').removeClass('is-active');
@@ -44,17 +47,13 @@ $('.word').hover(function(){},function(){
 
 $(document).ready(function(){
 	$(window).resize(resizeGameBoard);
-	var seed = $('#seed');
+	populateQuerystringData();
 	if(location.hash.length == 0)
 	{
-		seed.val(Math.floor(Math.random()*1000));
+		seed =''+(Math.floor(Math.random()*1000));
 		location.hash = $('#seed').val();
 	}
-	else
-	{
-		var hash = location.hash.substring(1);
-		seed.val(hash)
-	}
+
 	if(getCookie("darkTheme")!=="true")	{
 		$('#lightTheme').click();
 		lightThemeChecked = false;
@@ -62,6 +61,22 @@ $(document).ready(function(){
 	fire();
 	resizeGameBoard();
 });
+
+function populateQuerystringData(){
+	var hashItems = location.hash.substring(1).split('&');
+	for(var i=0; i < hashItems.length; i++){
+		var item = hashItems[i].split('=');
+		if(item.length == 2){
+			if(item[0] == 'seed'){
+				seed = item[1];
+			}
+			else if(item[0] == 'session'){
+				session = item[1];
+			}
+		}
+		
+	}
+}
 
 function resizeGameBoard()
 {
@@ -108,8 +123,8 @@ $("#lightTheme").change(function(){
 
 function fire() {
 	//get seed and set the seed for randomizer
-	var seed = document.getElementById("seed").value;
-	Math.seedrandom(seed.toLowerCase());
+	var boardSeed = document.getElementById("seed").value;
+	Math.seedrandom(boardSeed.toLowerCase());
 
 	var option = $('#gameMode :selected').val();
 	switch (option) {
