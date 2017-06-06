@@ -22,6 +22,55 @@ var menuIsOpen = false;
 
 var seed = '';
 var session = '';
+var revaledIds = [];
+var getSessionLoop = null;
+
+$(document).ready(function(){
+	$(window).resize(resizeGameBoard);
+	populateQuerystringData();
+	if(location.hash.length == 0){
+		seed =''+(Math.floor(Math.random()*1000));
+		location.hash = createHashString();
+		$('#seed').val(seed);
+	}
+	else{
+		$('#seed').val(seed);
+	}
+	if(getCookie("darkTheme")!=="true")	{
+		$('#lightTheme').click();
+		lightThemeChecked = false;
+	}
+	fire();
+	resizeGameBoard();
+	getSessionUpdateLoop();
+});
+
+
+function getSessionUpdateLoop() {
+	getSessionLoop = setTimeout(function(){
+		if(session!=='')
+		{
+			getSession(session);
+			getSessionUpdateLoop();
+		}
+	}, 2500);
+}
+
+function createHashString(){
+	var hash = 'seed=' + seed;
+	if(session !== ''){
+		hash += '&session=' + session;
+	}
+	return hash;
+}
+
+function createNewGameSession(){
+	createSession(seed, teams);
+};
+
+$('#btnJoinSession').click(function(){
+
+});
 
 $('.hamburger').click(function(){
 	if(menuIsOpen)	{
@@ -36,6 +85,13 @@ $('.hamburger').click(function(){
 	}
 });
 
+$('#newBoard').click(function(){
+	seed =''+(Math.floor(Math.random()*10000000));
+	location.hash = createHashString()
+	$('#seed').val(seed);
+	fire();
+});
+
 $('.word').hover(function(){},function(){
 	if(menuIsOpen)
 	{
@@ -43,23 +99,6 @@ $('.word').hover(function(){},function(){
 		$('#menu').fadeOut(500);
 		menuIsOpen = false;
 	}
-});
-
-$(document).ready(function(){
-	$(window).resize(resizeGameBoard);
-	populateQuerystringData();
-	if(location.hash.length == 0)
-	{
-		seed =''+(Math.floor(Math.random()*1000));
-		location.hash = $('#seed').val();
-	}
-
-	if(getCookie("darkTheme")!=="true")	{
-		$('#lightTheme').click();
-		lightThemeChecked = false;
-	}
-	fire();
-	resizeGameBoard();
 });
 
 function populateQuerystringData(){
@@ -74,12 +113,10 @@ function populateQuerystringData(){
 				session = item[1];
 			}
 		}
-		
 	}
 }
 
-function resizeGameBoard()
-{
+function resizeGameBoard(){
 	var windowHeight = $(window).height();
 	if(windowHeight < 750)
 	{
@@ -94,7 +131,10 @@ function resizeGameBoard()
 $( "#seed" ).keyup(function() {
   fire();
   clearTimeout(updateHashCall);
-  updateHashCall = setTimeout(function(){ location.hash = $('#seed').val();}, 500);
+  updateHashCall = setTimeout(function(){
+	  seed = $('#seed').val();
+	  location.hash = createHashString();
+	}, 500);
 });
 
 var updateHashCall;
@@ -127,23 +167,7 @@ function fire() {
 	Math.seedrandom(boardSeed.toLowerCase());
 
 	var option = $('#gameMode :selected').val();
-	switch (option) {
-		case '2knouns':
-			sessionData = data.slice(0);
-			break;
-		case 'movies':
-			sessionData = movieData.slice(0);
-			break;
-		case 'custom':
-			if(customData.length === 0){
-				var customWordList = prompt("Please enter custom word list. The list will be saved until your refresh your browser. (The words MUST be delimanted by spaces). eg: cat dog mouse", "Enter words here");
-				customData = customWordList.split(' ');
-			}
-			sessionData = customData.slice(0);	
-			break;
-		default:
-			sessionData = defaultData.slice(0);
-	}
+	sessionData = defaultData.slice(0);
 
 	wordsSelected = [];
 	teams = [];
@@ -212,6 +236,23 @@ function createNewGame() {
 	updateScore();
 }
 
+function sessionClickTile(value){
+	var item = $('#' + value);
+	if (!spyMasterMode) {
+		//guessers mode
+		var word = wordsSelected[value];
+		item.css('background-color', teams[value]);
+		item.attr('data-color',teams[value]);
+		item.addClass('chosen');
+	} else {
+		//spymaster mode
+		item.css('background-color', COLOR_GREEN);
+		item.attr('data-color',teams[value]);
+	}
+	updateScore()
+	item.css('font-size','16pt');
+}
+
 function clicked(value) {
 	var item = $('#' + value);
 	if (!spyMasterMode) {
@@ -231,18 +272,26 @@ function clicked(value) {
 		}
 	} else {
 		//spymaster mode
-		if(item.css('background-color') == COLOR_GREEN) {
-			item.css('background-color', teams[value]);
-			item.attr('data-color','');
+		if(session === '') {
+			if(item.css('background-color') == COLOR_GREEN) {
+				item.css('background-color', teams[value]);
+				item.attr('data-color','');
+			}
+			else {
+				item.css('background-color', COLOR_GREEN);
+				item.attr('data-color',teams[value]);
+			}
 		}
 		else {
-			item.css('background-color', COLOR_GREEN);
-			item.attr('data-color',teams[value]);
+			return;
 		}
 
 	}
 	updateScore()
 	item.css('font-size','16pt');
+
+	revealedIds = $('.word.chosen').map(function(){return this.id}).toArray();
+	performMove(session, revealedIds);
 }
 
 function updateScore(){

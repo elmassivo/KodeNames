@@ -1,14 +1,11 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Kodenames and Dragons</title>
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/hamburgers.css" >
-
 </head>
-
 <body>
   <div>
     <div id='header'>
@@ -17,10 +14,17 @@
           <span class="hamburger-inner"></span>
         </span>
       </button>
-    
-      <input type="text" id="seed" placeholder="seed" size="8" title="Board Seed">
+
+      <div id="seedBox">
+        <button id="newBoard">New Board</button>
+        <input type="text" id="seed" placeholder="seed" size="8" title="Board Seed">
+      </div>
 
       <div id="menu">
+        <button class="menuButton" id="btnCreateSession" onclick="createNewGameSession()">Create Session</button>
+        <input class="menuInput" id="txtSessionId" placeholder="Session Id" title="Session Id">
+        <button class="menuButton" id="btnJoinSession">Join Session</button>
+
         <button class="menuButton" id="spymaster" onclick="spyMaster()">I AM SPYMASTER</button>
         <br />
         <input class="menuCheck" type="checkbox" id="confirm">
@@ -34,7 +38,7 @@
         <span class="score" id="redScore" title="Red Spies Remaining">0</span>
         <span class="score" id="yellowScore" title="Bystanders Remaining">0</span>
         <span class="score" id="blackScore" title="Assassins Remaining">0</span>
-        <span class="score" id="blueScore" title="Blue Spies Remaining">0</span>  
+        <span class="score" id="blueScore" title="Blue Spies Remaining">0</span>
       </center>
   </div>
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script> 
