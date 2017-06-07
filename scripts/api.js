@@ -1,8 +1,8 @@
-function createSession(newBoardSeed, newBoardCardLayout){
+function createSession(newBoardSeed, revealedCardIds){
     // TODO: use 'seed' and 'teams' to populate new board
     var createParams = {
         boardSeed : newBoardSeed,
-        boardCardLayout : newBoardCardLayout
+        revealedCards : revealedCardIds
     };
     $.post('/api/Session/CreateSession', createParams)
     .done(function(response){
@@ -21,18 +21,23 @@ function createSession(newBoardSeed, newBoardCardLayout){
         }
     })
     .fail(function(){
-        //server kerfuffle error
-    });;
+        alert("Could not create session, unable to connect to server.");
+    });
 }
 
 function updateBoardFromSession(sessionBoard){
+    if(seed !== sessionBoard.boardSeed){
+        seed = sessionBoard.boardSeed;
+        $('#seed').val(seed);
+        location.hash = createHashString();
+        fire();
+    }
     $.each(sessionBoard.revealedCards, function(index,item){
         sessionClickTile(''+item);
     });
 }
 
 function performMove(sessionId, revealedCardList){
-    // TODO: use $('.word.chosen') to pull list of revealed cards (in id field)
     var performParams = {
         sessionId: sessionId,
         revealedCards: revealedCardList
@@ -50,7 +55,7 @@ function performMove(sessionId, revealedCardList){
         }
     })
     .fail(function(){
-        //server kerfuffle error
+        alert("Could not perform move, lost connection to server.");   
     });;
 }
 
@@ -70,6 +75,29 @@ function getSession(sessionId){
     })
     .fail(function(){
         clearTimeout(getSessionLoop);
-        //server kerfuffle error
     });;
+}
+
+function updateSeed(sessionId, newSeed){
+    var updateParams = {
+        sessionId: sessionId,
+        newSeed: seed
+    };
+    $.post('/api/Session/UpdateSeed', updateParams)
+    .done(function(response){
+        if(response != null && response.success && response.data != null)
+        {
+            seed = '';
+            updateBoardFromSession(response.data.sessionBoard);
+        }
+        else
+        {
+            //TODO: throw an error here
+            return false;
+        }
+    })
+    .fail(function(){
+        alert("Could not update seed, lost connection to server.");
+    });;
+
 }

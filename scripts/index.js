@@ -65,12 +65,14 @@ function createHashString(){
 }
 
 function createNewGameSession(){
-	createSession(seed, teams);
+	createSession(seed, revealedIds);
 };
 
-$('#btnJoinSession').click(function(){
-
-});
+function joinGameSession(){
+	session = $('#txtSessionId').val();
+    location.hash = createHashString();
+	getSessionUpdateLoop();
+};
 
 $('.hamburger').click(function(){
 	if(menuIsOpen)	{
@@ -86,10 +88,22 @@ $('.hamburger').click(function(){
 });
 
 $('#newBoard').click(function(){
-	seed =''+(Math.floor(Math.random()*10000000));
+	var currentSeed = seed;
+	var newSeed = $('#seed').val();
+	if(newSeed === '') {
+		seed =''+(Math.floor(Math.random()*10000000));
+		$('#seed').val(seed);
+	}
+	else{
+		seed = newSeed;
+	}
 	location.hash = createHashString()
-	$('#seed').val(seed);
-	fire();
+	if(session){
+		updateSeed(session, seed);
+	}
+	else{
+		fire();
+	}
 });
 
 $('.word').hover(function(){},function(){
@@ -128,14 +142,14 @@ function resizeGameBoard(){
 	}
 }
 
-$( "#seed" ).keyup(function() {
-  fire();
-  clearTimeout(updateHashCall);
-  updateHashCall = setTimeout(function(){
-	  seed = $('#seed').val();
-	  location.hash = createHashString();
-	}, 500);
-});
+// $( "#seed" ).keyup(function() {
+//   fire();
+//   clearTimeout(updateHashCall);
+//   updateHashCall = setTimeout(function(){
+// 	  seed = $('#seed').val();
+// 	  location.hash = createHashString();
+// 	}, 500);
+// });
 
 var updateHashCall;
 
@@ -291,7 +305,9 @@ function clicked(value) {
 	item.css('font-size','16pt');
 
 	revealedIds = $('.word.chosen').map(function(){return this.id}).toArray();
-	performMove(session, revealedIds);
+	if(session)	{
+		performMove(session, revealedIds);
+	}
 }
 
 function updateScore(){
