@@ -16,14 +16,18 @@
       </button>
 
       <div id="seedBox">
-        <button id="newBoard">New Board</button>
+        <button id="newBoard">Go</button>
         <input type="text" id="seed" placeholder="seed" size="8" title="Board Seed">
+      </div>
+      
+      <div id="sessionText">
+        <button id="btnJoinSession" onclick="joinGameSession()">Join</button>
+        <input id="txtSessionId" placeholder="session" title="Session Id">
       </div>
 
       <div id="menu">
         <button class="menuButton" id="btnCreateSession" onclick="createNewGameSession()">Create Session</button>
-        <input class="menuInput" id="txtSessionId" placeholder="Session Id" title="Session Id">
-        <button class="menuButton" id="btnJoinSession" onclick="joinGameSession()">Join Session</button>
+
 
         <button class="menuButton" id="spymaster" onclick="spyMaster()">I AM SPYMASTER</button>
         <br />
@@ -40,6 +44,15 @@
         <span class="score" id="blackScore" title="Assassins Remaining">0</span>
         <span class="score" id="blueScore" title="Blue Spies Remaining">0</span>
       </center>
+  </div>
+  <div class="modalOverlay" style="display:none"></div>
+  <div class="popUpModal" style="display:none">
+    <h1>DOGS ARE COOL, I GUESS</h1>
+    <p>THIS IS PRETTY RAD TOO</p>
+    <div class="modalButtons">
+      <button id="leftModalButton">Cancel</button>
+      <button id="rightModalButton">OK</button>
+    </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script> 
   <div id="board"></div>

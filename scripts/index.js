@@ -22,7 +22,7 @@ var menuIsOpen = false;
 
 var seed = '';
 var session = '';
-var revaledIds = [];
+var revealedIds = [];
 var getSessionLoop = null;
 
 $(document).ready(function(){
@@ -74,15 +74,22 @@ function joinGameSession(){
 	getSessionUpdateLoop();
 };
 
+$('.modalOverlay').click(function(){
+	$('.modalOverlay').hide();
+	$('.hamburger').click();
+});
+
 $('.hamburger').click(function(){
 	if(menuIsOpen)	{
 		$('.hamburger').removeClass('is-active');
 		$('#menu').fadeOut(500);
+		$('.modalOverlay').hide();
 		menuIsOpen = false;
 	}
 	else{
 		$('.hamburger').addClass('is-active');
 		$('#menu').fadeIn(500);
+		$('.modalOverlay').show();
 		menuIsOpen = true;
 	}
 });
@@ -90,6 +97,7 @@ $('.hamburger').click(function(){
 $('#newBoard').click(function(){
 	var currentSeed = seed;
 	var newSeed = $('#seed').val();
+	if(currentSeed == newSeed) return;
 	if(newSeed === '') {
 		seed =''+(Math.floor(Math.random()*10000000));
 		$('#seed').val(seed);
@@ -97,12 +105,12 @@ $('#newBoard').click(function(){
 	else{
 		seed = newSeed;
 	}
-	location.hash = createHashString()
 	if(session){
 		updateSeed(session, seed);
 	}
 	else{
 		fire();
+		location.hash = createHashString();
 	}
 });
 
@@ -226,14 +234,10 @@ function createNewGame() {
 	// one extra for one of the teams
 	if (Math.floor(Math.random() * data.length) % 2 === 0) {
 		teams.push(COLOR_RED);
-		// document.getElementById("team").style.color = COLOR_RED;
-		// document.getElementById("team").innerHTML = "RED";
 		$('#board').addClass('redStarts').removeClass('blueStarts');
 
 	} else {
 		teams.push(COLOR_BLUE);
-		// document.getElementById("team").style.color = COLOR_BLUE;
-		// document.getElementById("team").innerHTML = "BLUE";
 		$('#board').addClass('blueStarts').removeClass('redStarts');
 	}
 
@@ -363,10 +367,8 @@ function spyMaster() {
 function shuffle(array) {
 	var currentIndex = array.length,
 		temporaryValue, randomIndex;
-
 	// While there remain elements to shuffle...
 	while (0 !== currentIndex) {
-
 		// Pick a remaining element...
 		randomIndex = Math.floor(Math.random() * currentIndex);
 		currentIndex -= 1;
@@ -376,7 +378,6 @@ function shuffle(array) {
 		array[currentIndex] = array[randomIndex];
 		array[randomIndex] = temporaryValue;
 	}
-
 	return array;
 }
 
@@ -386,7 +387,8 @@ document.getElementById('seed').onkeypress = function(e) {
 	var keyCode = e.keyCode || e.which;
 	if (keyCode == '13') {
 		// Enter pressed
-		fire();
+		// fire();
+		$('#newBoard').click();
 		return false;
 	}
 }

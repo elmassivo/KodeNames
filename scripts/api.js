@@ -1,5 +1,4 @@
 function createSession(newBoardSeed, revealedCardIds){
-    // TODO: use 'seed' and 'teams' to populate new board
     var createParams = {
         boardSeed : newBoardSeed,
         revealedCards : revealedCardIds
@@ -89,6 +88,7 @@ function updateSeed(sessionId, newSeed){
         {
             seed = '';
             updateBoardFromSession(response.data.sessionBoard);
+            location.hash = createHashString();
         }
         else
         {

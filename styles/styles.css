@@ -20,7 +20,7 @@ button, input, span#first {
 
 #seedBox > button {
     position: absolute;
-    right: -110px;
+    right: 0px;
     top: 5px;
     height: 55px;
     border-radius: 15px;
@@ -28,6 +28,8 @@ button, input, span#first {
     color: #CCC;
     text-shadow: 0px 0px 10px black;
     border: none;
+    cursor: pointer;
+    z-index: 1;
 }
 
 #seedBox > input {
@@ -42,8 +44,80 @@ button, input, span#first {
     background-color: #444;
     text-align: right;
     color: #CCC;
+    font-size: 30px;
+    text-shadow: 0px 0px 10px black;
+}
+
+.modalOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 100;
+}
+
+.popUpModal {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    left: 25%;
+    top: 25%;
+    background-color: #333;
+    border: 3px solid #333;
+    border-radius: 15px;
+    z-index: 101;
+}
+
+.popUpModal > h1 {
+    text-align: center;
+}
+
+.popUpModal > p {
+    text-align: center;
+}
+
+.modalButtons {
+    position: absolute;
+    bottom: 10px;
+}
+
+.modalButtons > button {
+    width: 200px;
+    border-radius: 10px;
+}
+
+#sessionText {
+    position: absolute;
+    right: 80px;
+    top: 5px;
+}
+
+#sessionText > input {
+    width: 200px;
+    border: none;
+    border-radius: 15px;
+    padding:10px;
+    background-color: #444;
+    text-align: right;
+    color: #CCC;
     font-size:30px;
     text-shadow: 0px 0px 10px black;
+    z-index: -1;
+}
+
+#sessionText > button {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 55px;
+    border-radius: 15px;
+    background-color: #666;
+    color: #CCC;
+    text-shadow: 0px 0px 10px black;
+    border: none;
+    cursor: pointer;
+    z-index: 0;
 }
 
 #menu {
@@ -313,19 +387,23 @@ body {
 
 #redScore{
     background-color: #d43434;
+    z-index: 2;
 }
 
 #blueScore{
     background-color: #38b5d0;
+    z-index: 2;
 }
 
 #yellowScore{
     background-color: #efe36d;
+    z-index: 2;
 }
 
 #blackScore{
     background-color: #111111;
     color:white !important;
+    z-index: 2;
 }
 
 .score{
